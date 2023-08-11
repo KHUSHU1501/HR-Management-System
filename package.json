@@ -2,9 +2,9 @@
   "name": "dbs_assign2",
   "version": "1.0.0",
   "description": "HR application using Oracle Db",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Khushwant",
   "license": "ISC",
