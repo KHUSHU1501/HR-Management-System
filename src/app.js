@@ -20,18 +20,6 @@ const dbConfig = {
     "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = myoracle12c.senecacollege.ca)(PORT = 1521))(CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = oracle12c)))",
 };
 
-// Establish the database connection
-oracledb
-  .getConnection(dbConfig)
-  .then((connection) => {
-    console.log("Connected to the Oracle database!");
-    // Save the connection in a variable to reuse it in API routes
-    app.locals.connection = connection;
-  })
-  .catch((err) => {
-    console.error("Error connecting to the Oracle database:", err);
-  });
-
 // Set the view engine to EJS
 app.set("view engine", "ejs");
 
@@ -275,5 +263,16 @@ app.get("/departments", async (req, res) => {
 });
 
 app.listen(port, () => {
+  // Establish the database connection
+  oracledb
+    .getConnection(dbConfig)
+    .then((connection) => {
+      console.log("Connected to the Oracle database!");
+      // Save the connection in a variable to reuse it in API routes
+      app.locals.connection = connection;
+    })
+    .catch((err) => {
+      console.error("Error connecting to the Oracle database:", err);
+    });
   console.log(`Server is running on http://localhost:${port}`);
 });
