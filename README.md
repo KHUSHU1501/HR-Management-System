@@ -15,12 +15,11 @@ The application makes use of stored procedures and triggers within the Oracle da
 ## Installation and Setup
 
 1. Clone the repository: ```git clone https://github.com/KHUSHU1501/HR-Management-System.git```
-2. Navigate to the project directory: ```cd src```
-3. Install the required dependencies: ```npm i```
-4. Configure the Oracle database connection:
+2. Install the required dependencies: ```npm i```
+3. Configure the Oracle database connection:
 - Open `src/app.js` and update the database connection details.
-5. Start the server: ```node app.js```
-6. Access the application in your web browser at `http://localhost:3000`.
+4. Start the server: ```npm run start```
+5. Access the application in your web browser at `http://localhost:3000`.
 
 ## Features
 
