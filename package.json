@@ -1,0 +1,16 @@
+{
+  "name": "dbs_assign2",
+  "version": "1.0.0",
+  "description": "HR application using Oracle Db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Khushwant",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "oracledb": "^6.0.3"
+  }
+}

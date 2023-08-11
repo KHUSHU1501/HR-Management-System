@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job List</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 20px;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 1250px;
+        margin: auto;
+        margin-top: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Additional styles for modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 400px;
+      }
+
+      .modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+      }
+
+      .modal button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .modal button:hover {
+        background-color: #0056b3;
+      }
+
+      .hire-button {
+        text-align: right;
+        margin-bottom: 10px;
+        margin-top: 0px;
+      }
+
+      .hire-button a {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .identify-job-button {
+        text-align: left;
+        margin-bottom: 10px;
+        margin-top: 0px;
+      }
+
+      .identify-job-button a {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <h1>HR Management</h1>
+      <div>
+        <a href="/">Home</a>
+        <a href="/jobs">Jobs</a>
+        <a href="/employees">Employees</a>
+        <a href="/departments">Departments</a>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Job List</h1>
+      <div class="button-container">
+        <div class="identify-job-button">
+          <a href="/jobs/description">Identify a Job</a>
+        </div>
+        <div class="hire-button">
+          <a href="/jobs/add">Create New Job</a>
+        </div>
+      </div>
+
+      <table>
+        <tr>
+          <th>Job ID</th>
+          <th>Job Title/Description</th>
+          <th>Min Salary</th>
+          <th>Max Salary</th>
+          <th>Actions</th>
+        </tr>
+        <% jobs.forEach(job => { %>
+        <tr>
+          <td><%= job[0] %></td>
+          <td><%= job[1] %></td>
+          <td><%= job[2] %></td>
+          <td><%= job[3] %></td>
+          <td>
+            <button class="open-modal" data-modal-id="modal<%= job[0] %>">
+              Update
+            </button>
+          </td>
+        </tr>
+        <% }); %>
+      </table>
+    </div>
+
+    <!-- Modal for updating job -->
+    <% jobs.forEach(job => { %>
+    <div class="modal" id="modal<%= job[0] %>">
+      <div class="modal-content">
+        <h2>Update Job Details</h2>
+        <form action="/jobs/update" method="POST">
+          <input type="hidden" name="jobId" value="<%= job[0] %>" />
+          <label for="jobTitle">Job Title/Description:</label>
+          <input type="text" name="jobTitle" value="<%= job[1] %>" />
+          <label for="minSalary">Min Salary:</label>
+          <input type="number" name="minSalary" value="<%= job[2] %>" />
+          <label for="maxSalary">Max Salary:</label>
+          <input type="number" name="maxSalary" value="<%= job[3] %>" />
+          <button type="submit">Update</button>
+          <button type="button" class="close-modal">Cancel</button>
+        </form>
+      </div>
+    </div>
+    <% }); %>
+
+    <script>
+      const modalTriggers = document.querySelectorAll(".open-modal");
+      const closeModalButtons = document.querySelectorAll(".close-modal");
+
+      modalTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const modalId = trigger.dataset.modalId;
+          const modal = document.getElementById(modalId);
+          modal.style.display = "flex";
+        });
+      });
+
+      closeModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = button.closest(".modal");
+          modal.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>

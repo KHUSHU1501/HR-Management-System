@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Hiring Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 20px;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 800px;
+        margin: 20px auto;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      input {
+        width: 90%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <h1>HR Management</h1>
+      <div>
+        <a href="/">Home</a>
+        <a href="/jobs">Jobs</a>
+        <a href="/employees">Employees</a>
+        <a href="/departments">Departments</a>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Employee Hiring Form</h1>
+      <form action="/hire" method="POST">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required />
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required />
+
+        <label for="hireDate">Hire Date:</label>
+        <input
+          type="date"
+          id="hireDate"
+          name="hireDate"
+          value="<%= currentDate %>"
+          readonly
+        />
+
+        <label for="salary">Salary:</label>
+        <input type="number" id="salary" name="salary" required />
+
+        <label for="jobId">Job ID:</label>
+        <select id="jobId" name="jobId">
+          <!-- Populate job options from the database -->
+          <% jobs.forEach(job => { %>
+          <option value="<%= job[0] %>"><%= job[1] %></option>
+          <% }); %>
+        </select>
+
+        <label for="managerId">Manager:</label>
+        <select id="managerId" name="managerId">
+          <!-- Populate manager options from the database -->
+          <% managers.forEach(manager => { %>
+          <option value="<%= manager[0] %>">
+            <%= manager[1] %> <%= manager[2] %>
+          </option>
+          <% }); %>
+        </select>
+
+        <label for="departmentId">Department:</label>
+        <select id="departmentId" name="departmentId">
+          <!-- Populate department options from the database -->
+          <% departments.forEach(department => { %>
+          <option value="<%= department[0] %>"><%= department[1] %></option>
+          <% }); %>
+        </select>
+
+        <button type="submit">Hire Employee</button>
+      </form>
+    </div>
+  </body>
+</html>

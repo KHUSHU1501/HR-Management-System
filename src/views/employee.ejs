@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee List</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+      }
+
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 20px;
+      }
+
+      .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 1250px;
+        margin: auto;
+        margin-top: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Additional styles for modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 400px;
+      }
+
+      .modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 14px;
+      }
+
+      .modal button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .modal button:hover {
+        background-color: #0056b3;
+      }
+
+      .hire-button {
+        text-align: right;
+        margin-bottom: 10px;
+        margin-top: 0px;
+      }
+
+      .hire-button a {
+        display: inline-block;
+        background-color: #007bff;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <h1>HR Management</h1>
+      <div>
+        <a href="/">Home</a>
+        <a href="/jobs">Jobs</a>
+        <a href="/employees">Employees</a>
+        <a href="/departments">Departments</a>
+      </div>
+    </div>
+    <div class="container">
+      <h1>Employee List</h1>
+      <div class="hire-button">
+        <a href="/employee/hire">Hire New Employee</a>
+      </div>
+      <table>
+        <tr>
+          <th>Employee ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Hire Date</th>
+          <th>Job ID</th>
+          <th>Salary</th>
+          <th>Manager ID</th>
+          <th>Department ID</th>
+          <th>Actions</th>
+        </tr>
+        <% employees.forEach(employee => { %>
+        <tr>
+          <td><%= employee[0] %></td>
+          <td><%= employee[1] %></td>
+          <td><%= employee[2] %></td>
+          <td><%= employee[3] %></td>
+          <td><%= employee[4] %></td>
+          <td><%= employee[5].toLocaleDateString() %></td>
+          <td><%= employee[6] %></td>
+          <td><%= employee[7] %></td>
+          <td><%= employee[9] %></td>
+          <td><%= employee[10] %></td>
+          <td>
+            <button class="open-modal" data-modal-id="modal<%= employee[0] %>">
+              Update
+            </button>
+          </td>
+        </tr>
+        <% }); %>
+      </table>
+    </div>
+
+    <!-- Modal for updating employee -->
+    <% employees.forEach(employee => { %>
+    <div class="modal" id="modal<%= employee[0] %>">
+      <div class="modal-content">
+        <h2>Update Employee Details</h2>
+        <form action="/employees/update" method="POST">
+          <input type="hidden" name="employeeId" value="<%= employee[0] %>" />
+          <label for="salary">Salary:</label>
+          <input type="number" name="salary" value="<%= employee[7] %>" />
+          <label for="phone">Phone:</label>
+          <input type="text" name="phone" value="<%= employee[4] %>" />
+          <label for="email">Email:</label>
+          <input type="text" name="email" value="<%= employee[3] %>" />
+          <button type="submit">Update</button>
+          <button type="button" class="close-modal">Cancel</button>
+        </form>
+      </div>
+    </div>
+    <% }); %>
+
+    <script>
+      const modalTriggers = document.querySelectorAll(".open-modal");
+      const closeModalButtons = document.querySelectorAll(".close-modal");
+
+      modalTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          const modalId = trigger.dataset.modalId;
+          const modal = document.getElementById(modalId);
+          modal.style.display = "flex";
+        });
+      });
+
+      closeModalButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const modal = button.closest(".modal");
+          modal.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>
